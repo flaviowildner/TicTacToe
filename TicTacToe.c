@@ -1,6 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef __linux__
+#define CLEAR_CONSOLE "clear"
+#elif _WIN32
+#define CLEAR_CONSOLE CLEAR_CONSOLE
+#endif
+
+
+int checarVitoria(int matrizJogo[9]){
+    int wins[8][3] = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};//Lista de casos de vitórias.
+    int i;
+    for(i=0;i<8;i++){
+        if(matrizJogo[wins[i][0]] != 0 && matrizJogo[wins[i][0]] == matrizJogo[wins[i][1]] && matrizJogo[wins[i][0]] == matrizJogo[wins[i][2]])
+            return matrizJogo[wins[i][0]];
+    }
+    return 0;
+}
+
 void imprimirResultado(int matrizJogo[9], int pontos[3]){
     switch(checarVitoria(matrizJogo)){
         case -1:
@@ -30,22 +47,12 @@ char imprimirChar(int i){
 }
 
 void imprimirJogo(int matrizJogo[9]){
-    system("cls");
+    system(CLEAR_CONSOLE);
     printf("|%c|%c|%c|\n",imprimirChar(matrizJogo[0]),imprimirChar(matrizJogo[1]),imprimirChar(matrizJogo[2]));
     printf(" - - -\n");
     printf("|%c|%c|%c|\n",imprimirChar(matrizJogo[3]),imprimirChar(matrizJogo[4]),imprimirChar(matrizJogo[5]));
     printf(" - - -\n");
     printf("|%c|%c|%c|\n",imprimirChar(matrizJogo[6]),imprimirChar(matrizJogo[7]),imprimirChar(matrizJogo[8]));
-}
-
-int checarVitoria(int matrizJogo[9]){
-    int wins[8][3] = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};//Lista de casos de vitórias.
-    int i;
-    for(i=0;i<8;i++){
-        if(matrizJogo[wins[i][0]] != 0 && matrizJogo[wins[i][0]] == matrizJogo[wins[i][1]] && matrizJogo[wins[i][0]] == matrizJogo[wins[i][2]])
-            return matrizJogo[wins[i][0]];
-    }
-    return 0;
 }
 
 int minimax(int matrizJogo[9], int jogador){
@@ -118,7 +125,7 @@ int main(){
             printf("Deseja jogar primeiro?\n1-Sim.\n2-Nao.\n");
             scanf("%d", &vez);
             if(!(vez == 1 || vez == 2)){
-                system("cls");
+                system(CLEAR_CONSOLE);
                 i--;
             }
         }
@@ -153,7 +160,7 @@ int main(){
             scanf("%d", &run);
             if(run < 1 || run > 2)
                 i--;
-                system("cls");
+                system(CLEAR_CONSOLE);
         }
         for(i=0;i<9;i++)
             matrizJogo[i]=0;
